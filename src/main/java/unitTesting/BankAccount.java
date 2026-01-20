@@ -3,6 +3,14 @@ package unitTesting;
 public class BankAccount {
     private double balance;
     private double minimumBalance;
+    private boolean isActive = true;
+    private String holderName;
+
+    /**
+     * To run the test report, add plugins in pom, and run in console: mvn surefire-report:report
+     * Go to target/site to see the report
+     */
+
 
     public BankAccount (double initialBalance, double minimumBalance) {
         this.balance = initialBalance;
@@ -28,6 +36,22 @@ public class BankAccount {
     public double deposit(double amount) {
         balance += amount;
         return balance;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean status) {
+        this.isActive = status;
+    }
+
+    public String getHolderName() {
+        return holderName;
+    }
+
+    public void setHolderName(String name) {
+        this.holderName = name;
     }
 
 }

@@ -1,6 +1,7 @@
 package unitTesting;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -13,8 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DisplayName("Tests for BankAccount class")
-class BankAccountTest {
+class BankAccountNestedTest {
 
     @Test
     @DisplayName("Withdraw below minimum balance should throw exception")
@@ -84,5 +84,26 @@ class BankAccountTest {
     void testDepositTimeout() {
         BankAccount account = new BankAccount(100.0, 50.0);
         assertTimeout(Duration.ofNanos(10), () -> account.deposit(50));
+    }
+
+    @Nested
+    class WhenBalanceEqualsZero {
+
+        @Test
+        @DisplayName("Withdraw with minimum balance as 0 should throw exception")
+        void testWithdrawMinimumBalanceIs0() {
+            BankAccount account = new BankAccount(0.0, 0.0);
+            assertThrows(IllegalArgumentException.class, () -> {
+                account.withdraw(500.0);
+            });
+        }
+
+        @Test
+        @DisplayName("Withdraw with negative minimum balance should allow withdrawal")
+        void testWithdrawMinimumBalanceIsNegative() {
+            BankAccount account = new BankAccount(0.0, -100);
+            account.withdraw(50);
+            assertEquals(-50.0, account.getBalance());
+        }
     }
 }
